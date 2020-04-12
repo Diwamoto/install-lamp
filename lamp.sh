@@ -140,7 +140,7 @@ do
 		sudo mv /var/www/html/phpMyAdmin-$PMA_VERSION-all-languages /var/www/html/phpmyadmin
 		cp /var/www/html/phpmyadmin/config.sample.inc.php /var/www/html/phpmyadmin/config.inc.php
 		sudo chmod 640 /var/www/html/phpmyadmin/config.inc.php
-		
+		sudo chown root:www-data /var/www/html/phpmyadmin/config.inc.php
 		## sudo sed -e "/\$cfg['blowfish_secret'].=.''; \/\*.YOU.MUST.FILL.IN.THIS.FOR.COOKIE.AUTH! \*\//\$cfg['blowfish_secret'] = 'lampwithubuntu'/" phpmyadmin/config.inc.php
 		sudo touch /etc/apache2/sites-available/pma.conf
 		sudo chmod 777 /etc/apache2/sites-available/pma.conf
