@@ -100,7 +100,7 @@ sudo chmod 777 /etc/apache2/sites-available/vhost.conf
 sudo echo -e "NameVirtualHost *:80\n\n" > /etc/apache2/sites-available/vhost.conf
 sudo echo -e "<VirtualHost *:80>" >> /etc/apache2/sites-available/vhost.conf
 sudo echo -e "	ServerAlias $DOMAIN" >> /etc/apache2/sites-available/vhost.conf
-sudo echo -e "	DocumentRoot "/var/www/html/$WWW_ROOT"" >> /etc/apache2/sites-available/vhost.conf
+sudo echo -e "	DocumentRoot "$WWW_ROOT"" >> /etc/apache2/sites-available/vhost.conf
 sudo echo -e "	<Directory "/var/www/html">" >> /etc/apache2/sites-available/vhost.conf
 sudo echo -e "		AllowOverride All" >> /etc/apache2/sites-available/vhost.conf
 sudo echo -e "	</Directory>" >> /etc/apache2/sites-available/vhost.conf
