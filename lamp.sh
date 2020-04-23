@@ -182,6 +182,7 @@ do
 		sudo sed -i '6a                                 AllowOverride All' /etc/apache2/sites-available/default-ssl.conf
 		sudo sed -i '7a                 </Directory>' /etc/apache2/sites-available/default-ssl.conf
 		sudo systemctl restart apache2
+		SSL_INSTALL_FLG="true"
 	elif [ $input = 'no' ] || [ $input = 'NO' ] || [ $input = 'n' ] || [ $input = 'N' ]; then
 		SSL_INSTALL_FLG="false"
 	else
