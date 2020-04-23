@@ -21,6 +21,8 @@ MYSQL_USER_NAME='user'
 MYSQL_USER_PASSWORD='password'
 PMA_INSTALL_FLG=''
 PMA_VERSION='4.9.5'
+SSL_INSTALL_FLG=''
+SSL_ROOT_EMAIL=''
 if [ -z "$PHP_VERSION" ]; then
 	echo "[\033[31mERROR\033[m] PHPのバージョンが設定されていません。終了します..."
 	exit 1
@@ -156,6 +158,32 @@ do
 		sudo systemctl restart apache2
 	elif [ $input = 'no' ] || [ $input = 'NO' ] || [ $input = 'n' ] || [ $input = 'N' ]; then
 		PMA_INSTALL_FLG="false"
+	else
+		echo "yes または no を入力して下さい."
+	fi
+done
+
+# sslの設定をするかどうか（Let's Encrypt）
+echo "sslを設定しますか? [Y/n]"
+while [ -z "$SSL_INSTALL_FLG" ]
+do
+	read input
+	if [ -z $input ] ; then
+		echo "yes または no を入力して下さい."
+	elif [ $input = 'yes' ] || [ $input = 'YES' ] || [ $input = 'y' ] || [ $input = 'Y' ]; then
+		# certbotのinstall
+		sudo echo -e "deb http://mirrors.digitalocean.com/debian buster-backports main" >> /etc/apt/sources.list
+		sudo echo -e "deb-src http://mirrors.digitalocean.com/debian buster-backports main" >> /etc/apt/sources.list
+		sudo apt update
+		sudo apt install -y python-certbot-apache -t buster-backports
+		sudo certbot --apache -d $DOMAIN
+		sudo sed -i -e "s/DocumentRoot \/var\/www\/html\//                DocumentRoot $WWW_ROOT/g" /etc/apache2/sites-available/default-ssl.conf
+		sudo sed -i '5a                 <Directory "/var/www/html">' /etc/apache2/sites-available/default-ssl.conf
+		sudo sed -i '6a                                 AllowOverride All' /etc/apache2/sites-available/default-ssl.conf
+		sudo sed -i '7a                 </Directory>' /etc/apache2/sites-available/default-ssl.conf
+		sudo systemctl restart apache2
+	elif [ $input = 'no' ] || [ $input = 'NO' ] || [ $input = 'n' ] || [ $input = 'N' ]; then
+		SSL_INSTALL_FLG="false"
 	else
 		echo "yes または no を入力して下さい."
 	fi
